@@ -24,7 +24,7 @@ app.use((req,res,next)=>{
 });
 
 // mongoose.connect(
-//   "mongodb+srv://mdp:peSlThYtcsmwgvV8@cluster0.n214x.mongodb.net/dbbuku?retryWrites=true&w=majority&appName=Cluster0"
+//   "mongodb+srv://mdp:MCIrRJnTtCkNquNc@cluster0.n214x.mongodb.net/dbbuku?retryWrites=true&w=majority&appName=Cluster0"
 // ).then(()=>{
 //   console.log("Connected to Database");
 // }).catch((err)=>{
