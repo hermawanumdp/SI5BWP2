@@ -12,8 +12,13 @@ export class BukuService {
   private url : string ="https://apisi51.vercel.app/buku/";
 
   private subjectBuku = new Subject<Buku[]>();
+  private subjectExexute = new Subject<string>;
 
   constructor(private http : HttpClient) { }
+
+  exexuteBukuListener(){
+    return this.subjectExexute.asObservable();
+  }
 
   getBukuListener(){
     return this.subjectBuku.asObservable();    
@@ -22,6 +27,7 @@ export class BukuService {
   getBuku(){
     this.http.get<{message : string, bukus : Buku[]}>(this.url)
     .subscribe((value)=>{
+      console.log(value);
       this.subjectBuku.next(value.bukus)
     });
   }
@@ -34,15 +40,42 @@ export class BukuService {
       genre : genres
     }
 
-    console.log(buku);
+    //console.log(buku);
 
     this.http.post<{message : string}>(this.url,buku)
     .subscribe((response)=>{
       this.getBuku();
+      this.subjectExexute.next(response.message);
       //console.log(response.message)
     });
 
   }
 
- 
+  deleteBuku(buku : Buku){
+    this.http.delete<{message : string}>(this.url + buku._id)
+    .subscribe((response)=>{
+      //console.log(response.message);
+      this.getBuku();
+      this.subjectExexute.next(response.message);
+    });
+  }
+
+  updateBuku(judul : string, penulis : string, genres : string[], id : string){
+    const buku : Buku= {
+      _id : id,
+      judul : judul,
+      penulis : penulis,
+      genre : genres
+    }
+
+    //console.log(buku);
+
+    this.http.put<{message : string}>(this.url + id,buku)
+    .subscribe((response)=>{
+      this.getBuku();
+      this.subjectExexute.next(response.message);
+      //console.log(response.message)
+    });
+
+  }
 }
