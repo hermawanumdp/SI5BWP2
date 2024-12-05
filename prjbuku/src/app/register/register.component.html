@@ -10,29 +10,78 @@
                                     <h3 class="text-center font-weight-light my-4">Create Account</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form>
-
+                                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)">
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="inputEmail" type="email"
-                                                placeholder="name@example.com" />
+                                                placeholder="name@example.com" formControlName="email" autocomplete="on"
+                                                [ngClass]="
+                                                    registerForm.get('email')?.invalid && submitted ? 'is-invalid' : ''
+                                                " />
                                             <label for="inputEmail">Email address</label>
+                                            <div *ngIf="registerForm.get('email')?.invalid && submitted ?">
+                                                <small class="text-danger"
+                                                    *ngIf="registerForm.get('email')?.errors?.['required']">
+                                                    Email harus diisi
+                                                </small>
+                                                <small class="text-danger"
+                                                    *ngIf="registerForm.get('email')?.errors?.['email']">
+                                                    Email tidak valid
+                                                </small>
+
+                                            </div>
+
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
                                                     <input class="form-control" id="inputPassword" type="password"
-                                                        placeholder="Create a password" />
+                                                        placeholder="Create a password" formControlName="password"
+                                                        autocomplete="on"
+                                                        [ngClass]="registerForm.get('password')?.invalid && submitted ? 'is-invalid' : ''" />
                                                     <label for="inputPassword">Password</label>
                                                 </div>
+
+                                                <div *ngIf="registerForm.get('password')?.invalid && submitted ?">
+                                                    <small class="text-danger"
+                                                        *ngIf="registerForm.get('password')?.errors?.['required']">
+                                                        Password harus diisi
+                                                    </small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registerForm.get('password')?.errors?.['minlength']">
+                                                        Password harus minimal 8 karakter !
+                                                    </small>
+
+                                                </div>
+
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
                                                     <input class="form-control" id="inputPasswordConfirm"
-                                                        type="password" placeholder="Confirm password" />
+                                                        type="password" placeholder="Confirm password"
+                                                        formControlName="confirmPassword" autocomplete="on"
+                                                        [ngClass]="registerForm.get('confirmPassword')?.invalid && submitted ? 'is-invalid' : ''" />
                                                     <label for="inputPasswordConfirm">Confirm Password</label>
+                                                </div>
+
+                                                <div *ngIf="registerForm.get('password')?.invalid && submitted ?">
+                                                    <small class="text-danger"
+                                                        *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">
+                                                        Konfirmasi Password harus diisi
+                                                    </small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registerForm.get('confirmPassword')?.errors?.['minlength']">
+                                                        Konfirmasi Password harus minimal 8 karakter !
+                                                    </small>
+                                                    <small class="text-danger"
+                                                        *ngIf="registerForm.get('confirmPassword')?.errors?.['notMatch']">
+                                                        Password dan Konfirmasi beda !
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                         <div class="mt-4 mb-0">
                                             <div class="d-grid"><a class="btn btn-primary btn-block"
                                                     href="login.html">Create Account</a></div>
@@ -40,6 +89,18 @@
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
+                                    <div 
+                                    *ngIf="executeState != ''"
+                                    class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+
+                                    <div
+                                    *ngIf="executeState !=''"
+                                    class="text-success fw-bolder fs-4"
+                                    >
+                                        {{ executeState }}
+                                    </div>
                                     <div class="small"><a href="login.html">Have an account? Go to login</a></div>
                                 </div>
                             </div>
