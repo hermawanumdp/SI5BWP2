@@ -4,31 +4,42 @@ import { AdminComponent } from './admin/admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BukuComponent } from './buku/buku.component';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './services/auth-guard';
 
 const routes: Routes = [
   {
-    path : "register",
-    component : RegisterComponent
-
+    path: '',
+    component: LoginComponent,
   },
   {
-    path : 'admin',
-    component : AdminComponent,
-    children :[
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+    children: [
       {
         path: '',
-        component : DashboardComponent
+        component: DashboardComponent,
       },
       {
-        path : 'buku',
-        component : BukuComponent
-      }
-    ]
-  }
+        path: 'buku',
+        component: BukuComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
